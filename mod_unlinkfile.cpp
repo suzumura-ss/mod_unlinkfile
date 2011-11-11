@@ -25,7 +25,7 @@ extern "C" {
   #include "apr_strings.h"
 };
 
-#define AP_LOG_VERBOSE(rec, fmt, ...) ap_log_rerror(APLOG_MARK, APLOG_DEBUG,  0, rec, fmt, ##__VA_ARGS__)
+#define AP_LOG_VERBOSE(rec, fmt, ...) //ap_log_rerror(APLOG_MARK, APLOG_DEBUG,  0, rec, fmt, ##__VA_ARGS__)
 #define AP_LOG_DEBUG(rec, fmt, ...) ap_log_rerror(APLOG_MARK, APLOG_DEBUG,  0, rec, fmt, ##__VA_ARGS__)
 #define AP_LOG_INFO(rec, fmt, ...)  ap_log_rerror(APLOG_MARK, APLOG_INFO,   0, rec, "[reproxy] " fmt, ##__VA_ARGS__)
 #define AP_LOG_WARN(rec, fmt, ...)  ap_log_rerror(APLOG_MARK, APLOG_WARNING,0, rec, "[reproxy] " fmt, ##__VA_ARGS__)
@@ -78,9 +78,9 @@ static apr_status_t unlink_output_filter(ap_filter_t* f, apr_bucket_brigade* in_
   // Unlink
   AP_LOG_VERBOSE(rec, "-- Unlinking file: %s.", unlink_file);
   result = apr_file_remove(unlink_file, rec->pool);
-  {
+  if(result!=APR_SUCCESS) {
     char buf[100];
-    AP_LOG_VERBOSE(rec, "--> %s(%d)", apr_strerror(result, buf, 100), result);
+    AP_LOG_ERR(rec, UNLINK ": Unink '%s' failed. %s(%d).", unlink_file, apr_strerror(result, buf, 100), result);
   }
  
 PASS_THRU:

@@ -1,0 +1,15 @@
+mod_unlinkfile 0.0.1
+
+This module adds unlink-handler to Apache/2.x.
+
+To install:
+  sudo make install
+
+Usage:
+  * Enable the module:
+    X-Unlink-File On
+  For example, see unlink.conf for CentOS.
+
+  * Transfer with X-SendFile, and unlink temporary file.
+    X-SendFlie: /var/tmp/tempfile.tmp
+    X-Unlink-File: /var/tmp/tempfile.tmp
